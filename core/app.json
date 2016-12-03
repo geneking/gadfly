@@ -1,0 +1,22 @@
+{
+  "pageList": [
+    {
+      "title": "目录",
+      "src": "./app/page/pageList/pageList/main.js"
+    },
+    {
+      "title": "页面一",
+      "src": "./app/page/business1/childPage1/main.js"
+    },
+    {
+      "title": "页面二",
+      "src": "./app/page/business2/childPage1/main.js"
+    }
+  ],
+
+  "cdn": {
+    "bucketName": "waimai-mfe-queenbee",
+    "accessKeyId": "aa19bf25ac004c418b2b6f9690dd737a",
+    "secretAccessKey": "5ff9801dc6aa4901b1d36f2cf235b607"
+  }
+}
