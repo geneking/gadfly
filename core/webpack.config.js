@@ -1,24 +1,25 @@
-const path = require('path');
-const fs = require('fs');
-const exec = require('child_process').exec;
-const HappyPack = require('happypack');
-const merge = require('webpack-merge');
-const webpack = require('webpack');
-const WebpackMd5Hash = require('webpack-md5-hash');
-const HtmlwebpackPlugin = require('html-webpack-plugin');
-const ROOT_PATH = path.resolve(__dirname);
-const APP_PATH = path.resolve(ROOT_PATH, 'app');
-const BUILD_PATH = path.resolve(ROOT_PATH, 'build');
-const MODULE_PATH = path.resolve(ROOT_PATH, 'app/module');
+var path = require('path');
+var fs = require('fs');
+var exec = require('child_process').exec;
+var HappyPack = require('happypack');
+var merge = require('webpack-merge');
+var webpack = require('webpack');
+var WebpackMd5Hash = require('webpack-md5-hash');
+var HtmlwebpackPlugin = require('html-webpack-plugin');
+var ROOT_PATH = path.resolve(__dirname);
+var APP_PATH = path.resolve(ROOT_PATH, 'app');
+var BUILD_PATH = path.resolve(ROOT_PATH, 'build');
+var MODULE_PATH = path.resolve(ROOT_PATH, 'app/module');
 
+var data = JSON.parse(fs.readFileSync('app.json', 'utf-8'));
 /**
  * [getDist 获取app.json中js分发路径]
  * @param  {[type]} src [description]
  * @return {[type]}     [description]
  */
-const getDist = (src) => {
-  const s1 = src.split("./app/page/")[1];
-  const s2 = s1.substr(0, s1.lastIndexOf("/"));
+var getDist = function(src) {
+  var s1 = src.split("./app/page/")[1];
+  var s2 = s1.substr(0, s1.lastIndexOf("/"));
   return s2;
 };
 
@@ -26,17 +27,16 @@ const getDist = (src) => {
  * [getHtmlPluginArr 页面映射文件]
  * @return {[type]} [description]
  */
-const getHtmlPluginArr = () => {
-  let data = JSON.parse(fs.readFileSync('app.json', 'utf-8'));
-  let pageList = data.pageList;
-  let resultObj = {
+var getHtmlPluginArr = function() {
+  var pageList = data.pageList;
+  var resultObj = {
     "pluginArr": [],
     "entryObj": {
       "common/common": MODULE_PATH + "/common/common.js"
     }
   };
 
-  pageList.map((item, index) => {
+  pageList.map(function(item, index) {
     resultObj.entryObj[getDist(item.src)] = item.src;
     resultObj.pluginArr.push(
       new HtmlwebpackPlugin({
@@ -58,8 +58,8 @@ const getHtmlPluginArr = () => {
   return resultObj;
 };
 
-const appJsonObj = getHtmlPluginArr();
-const commonConfig = {
+var appJsonObj = getHtmlPluginArr();
+var commonConfig = {
     entry: appJsonObj.entryObj,
     module: {
       preLoaders: [
