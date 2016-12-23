@@ -43,7 +43,7 @@ var getHtmlPluginArr = function() {
         chunks: ["common/common", getDist(item.src)], //当前页面js
         title: item.title,
         template: "app/" + "template.ejs",
-        filename: getDist(item.src) + '.html',
+        filename: 'html/' + getDist(item.src) + '.html',
         chunksSortMode: "dependency"
       })
     );
@@ -51,8 +51,7 @@ var getHtmlPluginArr = function() {
     resultObj.pluginArr.push(
       new HappyPack({id: 'html'}),
       new HappyPack({id: 'css'}),
-      new HappyPack({id: 'js'}),
-      new HappyPack({id: 'tpl'})
+      new HappyPack({id: 'js'})
     );
   });
   return resultObj;
@@ -62,29 +61,29 @@ var appJsonObj = getHtmlPluginArr();
 var commonConfig = {
     entry: appJsonObj.entryObj,
     module: {
-      preLoaders: [
+      /*preLoaders: [
         {
           test: /\.(js|jsx)$/,
           loader: 'eslint-loader',
           include: APP_PATH,
           exclude: MODULE_PATH
         }
-      ],
+    ],*/
       loaders: [
-        {test: /\.html$/, loader: "html?minimize=false" },
-        {test: /\.json$/, loader: "json" },
-        {test: /\.scss|\.css$/, loaders: ["style", "css", "sass"] },
-        {test: /\.(?:jpg|gif|png)$/, loader: 'url?limit=10240&name=../images/[name]-[hash:10].[ext]' },
-        {test: /\.handlebars/, loader: "handlebars" },
-        {
-          test: /\.js$|\.jsx$/,
-          exclude: /(node_modules|bower_components)/,
-          loader: 'babel',
-          query: {
-            presets: ['es2015','react'],
-            plugins: ['transform-class-properties']
-          }
-        },
+          { test: /\.html$/, loader: "html?minimize=false", happy: {id: "html"} },
+          { test: /\.json$/, loader: "json" },
+          { test: /\.scss|\.css$/, loaders: ["style", "css", "sass"], happy: {id: "css"} },
+          { test: /\.(?:jpg|gif|png)$/, loader: 'url?limit=10240&name=images/[name]-[hash:10].[ext]' },
+          {
+              test: /\.js$|\.jsx$/,
+              exclude: /(node_modules|bower_components)/,
+              loader: 'babel',
+              query: {
+                  presets: ['es2015','react'],
+                  plugins: ['transform-class-properties']
+              },
+              happy: {id: "js"}
+          },
       ]
     },
   output: {
